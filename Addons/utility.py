@@ -1,5 +1,9 @@
 import pygame as pg, json
 from Addons.game_objects import Platform
+import os
+
+
+
 
 def image_cutter(sheet, frame_x, frame_y, width, height, scale):
     img = pg.Surface((width, height),pg.SRCALPHA)
@@ -15,8 +19,8 @@ def load_animation(sheet, row, frame_count, width, height, scale):
     return frames
 
 def load_platforms(path):
-    with open(path) as file:
-        data = json.load(file)
+    with open(path, "r") as f:
+        data = json.load(f)
 
 
     platforms = []
@@ -29,3 +33,4 @@ def load_platforms(path):
         platforms.append(Platform(x, y, w, h))
 
     return platforms
+    
