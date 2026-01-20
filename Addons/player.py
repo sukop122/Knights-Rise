@@ -183,7 +183,6 @@ class Player(pg.sprite.Sprite):
                 self.index = 0
         
         #Collision with platforms
-        # Update rect později, až po změně x, y
         self.x += self.vel_x
         self.y += self.vel_y
 
@@ -195,12 +194,14 @@ class Player(pg.sprite.Sprite):
 
             if (
                 self.vel_y >= 0 and
-                self.rect.bottom <= platform.rect.top + 5 and  # tolerance (5px)
+                self.rect.bottom <= platform.rect.top + 10 and 
                 next_rect.bottom >= platform.rect.top and
                 self.rect.right > platform.rect.left and
-                self.rect.left < platform.rect.right
+                self.rect.left < platform.rect.right and
+                self.state != "bump"
+                
             ):
-                # Přistání na platformu
+                #Landing on top
                 self.y = platform.rect.top - self.hitbox_offset_y - self.hitbox_height
                 self.vel_y = 0
                 self.on_ground = True
