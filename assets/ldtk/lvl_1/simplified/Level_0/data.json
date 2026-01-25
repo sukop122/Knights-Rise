@@ -158,6 +158,138 @@
 				"height": 48,
 				"color": 12470831,
 				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "9e0aac20-d380-11f0-ab9d-cf1437b7739b",
+				"layer": "Platform",
+				"x": 400,
+				"y": 384,
+				"width": 80,
+				"height": 48,
+				"color": 12470831,
+				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "a1ab2b70-d380-11f0-ab9d-99cc03b05248",
+				"layer": "Platform",
+				"x": 288,
+				"y": 304,
+				"width": 48,
+				"height": 32,
+				"color": 12470831,
+				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "a6a80670-d380-11f0-ab9d-7742061d1459",
+				"layer": "Platform",
+				"x": 704,
+				"y": 224,
+				"width": 80,
+				"height": 48,
+				"color": 12470831,
+				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "a8c28200-d380-11f0-ab9d-632b0fb663e6",
+				"layer": "Platform",
+				"x": 112,
+				"y": 208,
+				"width": 80,
+				"height": 48,
+				"color": 12470831,
+				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "aa28a1b0-d380-11f0-ab9d-5f8dcc085770",
+				"layer": "Platform",
+				"x": 496,
+				"y": 80,
+				"width": 80,
+				"height": 48,
+				"color": 12470831,
+				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "ab22b920-d380-11f0-ab9d-c362527c1274",
+				"layer": "Platform",
+				"x": 112,
+				"y": 416,
+				"width": 48,
+				"height": 32,
+				"color": 12470831,
+				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "b14db3e0-d380-11f0-ab9d-45ac762816f5",
+				"layer": "Platform",
+				"x": 880,
+				"y": 576,
+				"width": 48,
+				"height": 32,
+				"color": 12470831,
+				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "b5b99980-d380-11f0-ab9d-1764b76604df",
+				"layer": "Platform",
+				"x": 976,
+				"y": 352,
+				"width": 80,
+				"height": 48,
+				"color": 12470831,
+				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "b6b2c690-d380-11f0-ab9d-53acd46bde95",
+				"layer": "Platform",
+				"x": 1264,
+				"y": 368,
+				"width": 48,
+				"height": 32,
+				"color": 12470831,
+				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "b7e0bf40-d380-11f0-ab9d-df27516cf7ab",
+				"layer": "Platform",
+				"x": 1440,
+				"y": 176,
+				"width": 48,
+				"height": 32,
+				"color": 12470831,
+				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "b9ba6140-d380-11f0-ab9d-390883429959",
+				"layer": "Platform",
+				"x": 848,
+				"y": 80,
+				"width": 240,
+				"height": 80,
+				"color": 12470831,
+				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "c24e45b0-d380-11f0-ab9d-a5e7b4028d51",
+				"layer": "Platform",
+				"x": 912,
+				"y": 160,
+				"width": 144,
+				"height": 32,
+				"color": 12470831,
+				"customFields" : {}
 			}
 		]
 	}

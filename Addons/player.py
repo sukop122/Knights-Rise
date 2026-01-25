@@ -71,37 +71,15 @@ class Player(pg.sprite.Sprite):
             self.respawn()
 
 
-     #Movement Left and Right on ground
-
-        if not self.charging and self.on_ground:
-            if keys[pg.K_a]:
-                self.vel_x = -self.speed
-                self.facing_right = False
-                self.jump_direction = -1
-                self.state = "run"
-            
-                
-            elif keys[pg.K_d]:
-                self.vel_x = self.speed
-                self.facing_right = True
-                self.jump_direction = 1
-                self.state = "run"
-            
-            else:
-                self.vel_x = 0
-                self.state = "idle"
-                
-
-        
-
     #Jumping and Charging
-     
         if self.on_ground:
             if keys[pg.K_SPACE]:
                 self.charging = True
+                self.vel_x = 0
                 self.charge_power += 0.2
+                self.state = "charge"
             
-                if self.charging == True:    
+                if self.charging:    
                     if keys[pg.K_a]:
                         self.facing_right = False
                         self.jump_direction = -1
@@ -113,28 +91,41 @@ class Player(pg.sprite.Sprite):
                 
                 if self.charge_power > self.max_charge:
                     self.charge_power = self.max_charge
-                self.state = "charge"
+                    return
+               
 
             elif self.charging:
+                print("state is", self.state)
                 self.jump(self.charge_power)
                 self.charging = False
                 self.charge_power = 0
-            
+                
+                
+        
+    # Movement Left and Right
+        if self.on_ground and not self.charging and self.state != "charge":
+            if keys[pg.K_a]:
+                self.vel_x = -self.speed
+                self.facing_right = False
+                self.jump_direction = -1
+                self.state = "run"
+            elif keys[pg.K_d]:
+                self.vel_x = self.speed
+                self.facing_right = True
+                self.jump_direction = 1
+                self.state = "run"
+            else:
+                self.vel_x = 0
+                self.state = "idle"
 
 
-        #Lock horizontal movement when charging or airborne
-        if self.charging:
-            self.vel_x = 0
-
-
-    
     #Gravity
         gravity = 0.3
         self.vel_y += gravity
 
     #Aplication of velocities
-        self.x += self.vel_x
         self.y += self.vel_y
+        self.x += self.vel_x
         self.rect.topleft = (self.x + self.hitbox_offset_x, self.y + self.hitbox_offset_y)
     #Collision with screen borders
         if self.in_air:
@@ -206,7 +197,8 @@ class Player(pg.sprite.Sprite):
                 self.vel_y = 0
                 self.on_ground = True
                 self.in_air = False
-                self.state = "idle" if self.vel_x == 0 else "run"
+                if not self.charging:
+                    self.state = "idle" if self.vel_x == 0 else "run"
                 landed = True
                 break
             
@@ -244,10 +236,11 @@ class Player(pg.sprite.Sprite):
                 self.x = platform.rect.right - self.hitbox_offset_x
                 self.vel_x *= -0.5
                 self.state = "bump"
-        if not landed:
+        if not landed and not self.charging:
                 self.on_ground = False
                 self.in_air = True
 
+        print("at end of update, state is", self.state)
 
     #Jump function        
     def jump(self, power):
@@ -292,7 +285,7 @@ class Player(pg.sprite.Sprite):
         current_anim = self.animations[self.state]
 
         if isinstance(current_anim, list):
-            frame = current_anim[int(self.index)]
+            frame = current_anim[int(self.index)% len(current_anim)]
         else:
             frame = current_anim  # single frame
 
