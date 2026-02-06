@@ -34,3 +34,13 @@ def load_platforms(path):
 
     return platforms
     
+
+def load_level_data(level_data):
+   map_path = level_data["map"]
+   map_surface = pg.image.load(map_path).convert_alpha()
+
+   json_path = map_path.replace(".png", ".json").replace("_composite", "data")
+   platforms = load_platforms(json_path)
+
+   return map_surface, platforms
+    

@@ -64,10 +64,10 @@ class Player(pg.sprite.Sprite):
         self.rect.topleft = (self.x + self.hitbox_offset_x, self.y + self.hitbox_offset_y)
         
 
-    def update(self, keys, platforms):
+    def update(self, keys, platforms, current_level):
 
-    #respawn
-        if self.y > screen_height + 200:
+    #respawn - only on level 0
+        if self.y > screen_height + 200 and current_level == 0:
             self.respawn()
 
 
@@ -95,7 +95,6 @@ class Player(pg.sprite.Sprite):
                
 
             elif self.charging:
-                print("state is", self.state)
                 self.jump(self.charge_power)
                 self.charging = False
                 self.charge_power = 0
@@ -180,20 +179,20 @@ class Player(pg.sprite.Sprite):
         self.rect.topleft = (self.x + self.hitbox_offset_x, self.y + self.hitbox_offset_y)
 
         landed = False
-        for platform in platforms:
+        for plat in platforms:
             next_rect = self.rect.move(0, self.vel_y)
-
+        #Landing on top
             if (
                 self.vel_y >= 0 and
-                self.rect.bottom <= platform.rect.top + 10 and 
-                next_rect.bottom >= platform.rect.top and
-                self.rect.right > platform.rect.left and
-                self.rect.left < platform.rect.right and
+                self.rect.bottom <= plat.rect.top + 20 and 
+                next_rect.bottom >= plat.rect.top and
+                self.rect.right > plat.rect.left and
+                self.rect.left < plat.rect.right and
                 self.state != "bump"
                 
             ):
-                #Landing on top
-                self.y = platform.rect.top - self.hitbox_offset_y - self.hitbox_height
+                
+                self.y = plat.rect.top - self.hitbox_offset_y - self.hitbox_height
                 self.vel_y = 0
                 self.on_ground = True
                 self.in_air = False
@@ -206,41 +205,41 @@ class Player(pg.sprite.Sprite):
             #Bump from bottom
             elif (
                 self.vel_y < 0 and
-                self.rect.colliderect(platform.rect) and
-                self.rect.top + self.vel_y <= platform.rect.bottom <= self.rect.top
+                self.rect.colliderect(plat.rect) and
+                self.rect.top + self.vel_y <= plat.rect.bottom <= self.rect.top
             ):
-                self.y = platform.rect.bottom - self.hitbox_offset_y
+                self.y = plat.rect.bottom - self.hitbox_offset_y
                 self.vel_y = 0.5
                 self.state = "bump"
                 
             #Bump from left
             elif (
                 self.vel_x > 0 and
-                self.rect.right >= platform.rect.left and
-                self.rect.left < platform.rect.left and
-                self.rect.bottom > platform.rect.top + 10 and
-                self.rect.top < platform.rect.bottom - 10
+                self.rect.right >= plat.rect.left and
+                self.rect.left < plat.rect.left and
+                self.rect.bottom > plat.rect.top + 10 and
+                self.rect.top < plat.rect.bottom - 10
             ):
-                self.x = platform.rect.left - self.hitbox_offset_x - self.hitbox_width
+                self.x = plat.rect.left - self.hitbox_offset_x - self.hitbox_width
                 self.vel_x *= -0.5
                 self.state = "bump"
 
             #Bump from right
             elif (
                 self.vel_x < 0 and
-                self.rect.left <= platform.rect.right and
-                self.rect.right > platform.rect.right and
-                self.rect.bottom > platform.rect.top + 10 and
-                self.rect.top < platform.rect.bottom - 10
+                self.rect.left <= plat.rect.right and
+                self.rect.right > plat.rect.right and
+                self.rect.bottom > plat.rect.top + 10 and
+                self.rect.top < plat.rect.bottom - 10
             ):
-                self.x = platform.rect.right - self.hitbox_offset_x
+                self.x = plat.rect.right - self.hitbox_offset_x
                 self.vel_x *= -0.5
                 self.state = "bump"
         if not landed and not self.charging:
                 self.on_ground = False
                 self.in_air = True
-
-        print("at end of update, state is", self.state)
+        
+        self.rect.topleft = (self.x + self.hitbox_offset_x, self.y + self.hitbox_offset_y)
 
     #Jump function        
     def jump(self, power):
