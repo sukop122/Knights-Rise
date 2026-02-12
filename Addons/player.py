@@ -181,57 +181,54 @@ class Player(pg.sprite.Sprite):
         landed = False
         for plat in platforms:
             next_rect = self.rect.move(0, self.vel_y)
-        #Landing on top
-            if (
-                self.vel_y >= 0 and
-                self.rect.bottom <= plat.rect.top + 20 and 
-                next_rect.bottom >= plat.rect.top and
+
+            # horizontal overlap check
+            horiz = (self.rect.right > plat.rect.left) and (self.rect.left < plat.rect.right)
+
+            # Landing on top (moving down)
+            if self.vel_y > 0 and horiz and self.state != "bump":
+                if self.rect.bottom <= plat.rect.top + 20 and next_rect.bottom >= plat.rect.top:
+                    self.y = plat.rect.top - self.hitbox_offset_y - self.hitbox_height
+                    self.vel_y = 0
+                    self.on_ground = True
+                    self.in_air = False
+                    if not self.charging:
+                        self.state = "idle" if self.vel_x == 0 else "run"
+                    landed = True
+                    break
+            
+            elif (
+                self.vel_y < 0 and
+                self.rect.top >= plat.rect.bottom - 20 and
+                next_rect.top <= plat.rect.bottom and
                 self.rect.right > plat.rect.left and
                 self.rect.left < plat.rect.right and
                 self.state != "bump"
                 
             ):
-                
-                self.y = plat.rect.top - self.hitbox_offset_y - self.hitbox_height
-                self.vel_y = 0
-                self.on_ground = True
-                self.in_air = False
-                if not self.charging:
-                    self.state = "idle" if self.vel_x == 0 else "run"
-                landed = True
-                break
-            
-            
-            #Bump from bottom
-            elif (
-                self.vel_y < 0 and
-                self.rect.colliderect(plat.rect) and
-                self.rect.top + self.vel_y <= plat.rect.bottom <= self.rect.top
-            ):
-                self.y = plat.rect.bottom - self.hitbox_offset_y
-                self.vel_y = 0.5
+                self.y = plat.rect.bottom - self.hitbox_offset_y + self.hitbox_height
+                self.vel_y *= - 0.5
                 self.state = "bump"
                 
-            #Bump from left
-            elif (
-                self.vel_x > 0 and
-                self.rect.right >= plat.rect.left and
-                self.rect.left < plat.rect.left and
-                self.rect.bottom > plat.rect.top + 10 and
-                self.rect.top < plat.rect.bottom - 10
-            ):
+            ## Bump from bottom (head hit) - moving up
+            #if self.vel_y < 0 and horiz:
+            #    tol = max(2, int(abs(self.vel_y)))
+            #    if (self.rect.top >= plat.rect.bottom - tol) and (next_rect.top <= plat.rect.bottom + tol):
+            #        # position player just below platform bottom
+            #        self.y = plat.rect.bottom - self.hitbox_offset_y
+            #        self.vel_y = 0.5
+            #        self.state = "bump"
+            #        # update rect to new position so horizontal checks use corrected position
+            #        self.rect.topleft = (self.x + self.hitbox_offset_x, self.y + self.hitbox_offset_y)
+
+            # Bump from left
+            elif self.vel_x > 0 and self.rect.right >= plat.rect.left and self.rect.left < plat.rect.left and self.rect.bottom > plat.rect.top + 10 and self.rect.top < plat.rect.bottom - 10:
                 self.x = plat.rect.left - self.hitbox_offset_x - self.hitbox_width
                 self.vel_x *= -0.5
                 self.state = "bump"
 
-            #Bump from right
-            elif (
-                self.vel_x < 0 and
-                self.rect.left <= plat.rect.right and
-                self.rect.right > plat.rect.right and
-                self.rect.bottom > plat.rect.top + 10 and
-                self.rect.top < plat.rect.bottom - 10
-            ):
+            # Bump from right
+            elif self.vel_x < 0 and self.rect.left <= plat.rect.right and self.rect.right > plat.rect.right and self.rect.bottom > plat.rect.top + 10 and self.rect.top < plat.rect.bottom - 10:
                 self.x = plat.rect.right - self.hitbox_offset_x
                 self.vel_x *= -0.5
                 self.state = "bump"

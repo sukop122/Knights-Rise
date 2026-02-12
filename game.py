@@ -8,7 +8,7 @@ from Addons.utility import load_platforms, load_level_data
 
 levels = [
         {
-            "map":"assets/ldtk/lvl_1/simplified/Level_0/_composite.png" 
+        "map":"assets/ldtk/lvl_1/simplified/Level_0/_composite.png" 
         },
     {
         "map":"assets/ldtk/lvl_1/simplified/Level_1/_composite.png"
