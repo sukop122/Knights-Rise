@@ -14,7 +14,7 @@ levels = [
         "map":"assets/ldtk/lvl_1/simplified/Level_1/_composite.png"
         }
     ]
-current_level = 0
+current_level = 1
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -31,7 +31,7 @@ current_map, platform = load_level_data(levels[current_level])
 
 sheet = pg.image.load("assets/dataset/brackey/sprites/knight.png").convert_alpha()
 
-player = Player(400, (screen_height - 200), sheet)
+player = Player(380, (screen_height - 200), sheet)
 
 while running:
     screen.fill((30, 30, 30))
