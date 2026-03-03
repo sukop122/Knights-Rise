@@ -66,7 +66,7 @@ class Player(pg.sprite.Sprite):
     def update(self, keys, platforms, current_level):
 
     #respawn - only on level 0
-        if self.y > screen_height + 200 and current_level == 2:
+        if self.y > screen_height + 200 and current_level == 0:
             self.respawn()
 
 
