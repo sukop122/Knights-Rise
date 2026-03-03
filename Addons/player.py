@@ -1,4 +1,3 @@
-from platform import platform
 import pygame as pg
 from Addons.settings import *
 from Addons.utility import image_cutter, load_animation
@@ -22,9 +21,9 @@ class Player(pg.sprite.Sprite):
         self.on_ground = True
         self.charging = False
         self.charge_power = 0
-        self.max_charge = 8
+        self.max_charge = 16
         self.in_air = False
-        self.speed = 1.5
+        self.speed = 3
 
         self.state = "idle"
         self.index = 0
@@ -67,7 +66,7 @@ class Player(pg.sprite.Sprite):
     def update(self, keys, platforms, current_level):
 
     #respawn - only on level 0
-        if self.y > screen_height + 200 and current_level == 0:
+        if self.y > screen_height + 200 and current_level == 2:
             self.respawn()
 
 
@@ -76,7 +75,7 @@ class Player(pg.sprite.Sprite):
             if keys[pg.K_SPACE]:
                 self.charging = True
                 self.vel_x = 0
-                self.charge_power += 0.2
+                self.charge_power += 0.4
                 self.state = "charge"
             
                 if self.charging:    
@@ -91,7 +90,7 @@ class Player(pg.sprite.Sprite):
                 
                 if self.charge_power > self.max_charge:
                     self.charge_power = self.max_charge
-                    return
+                    
                
 
             elif self.charging:
@@ -119,12 +118,10 @@ class Player(pg.sprite.Sprite):
 
 
     #Gravity
-        gravity = 0.3
+        gravity = 0.6
         self.vel_y += gravity
 
     #Aplication of velocities
-        self.y += self.vel_y
-        self.x += self.vel_x
         self.rect.topleft = (self.x + self.hitbox_offset_x, self.y + self.hitbox_offset_y)
     #Collision with screen borders
         if self.in_air:
@@ -136,7 +133,7 @@ class Player(pg.sprite.Sprite):
                     self.state = "bump"
                     
                     self.vel_x *= -0.6
-                    if self.y == screen_height - 50 - self.height:
+                    if self.y >= screen_height - 50 - self.height:
                         self.collision = False
             
 
@@ -172,7 +169,7 @@ class Player(pg.sprite.Sprite):
             if self.index >= len(self.animations["run"]):
                 self.index = 0
         
-        #Collision with platforms
+        #################Collision with platforms#######################################################################################################
         self.x += self.vel_x
         self.y += self.vel_y
 
@@ -186,20 +183,24 @@ class Player(pg.sprite.Sprite):
             horiz = (self.rect.right > plat.rect.left) and (self.rect.left < plat.rect.right)
 
             # Landing on top (moving down)
-            if self.vel_y > 0 and horiz and self.state != "bump":
-                if self.rect.bottom <= plat.rect.top + 20 and next_rect.bottom >= plat.rect.top:
+            tolerance = max(20, abs (self.vel_y) + 4)
+            if self.vel_y > 0 and horiz:
+                if self.rect.bottom <= plat.rect.top + tolerance and next_rect.bottom >= plat.rect.top:
                     self.y = plat.rect.top - self.hitbox_offset_y - self.hitbox_height
                     self.vel_y = 0
                     self.on_ground = True
                     self.in_air = False
+                    self.collision = False
                     if not self.charging:
                         self.state = "idle" if self.vel_x == 0 else "run"
                     landed = True
                     break
-            
-            elif (
+
+            #Bump from bottom (head hit) - moving up (teacher)
+            if (
+
                 self.vel_y < 0 and
-                self.rect.top >= plat.rect.bottom - 20 and
+                self.rect.top >= plat.rect.bottom - tolerance and
                 next_rect.top <= plat.rect.bottom and
                 self.rect.right > plat.rect.left and
                 self.rect.left < plat.rect.right and
@@ -210,7 +211,7 @@ class Player(pg.sprite.Sprite):
                 self.vel_y *= - 0.5
                 self.state = "bump"
                 
-            ## Bump from bottom (head hit) - moving up
+            ##Bump from bottom (head hit) - moving up (AI help)
             #if self.vel_y < 0 and horiz:
             #    tol = max(2, int(abs(self.vel_y)))
             #    if (self.rect.top >= plat.rect.bottom - tol) and (next_rect.top <= plat.rect.bottom + tol):
@@ -222,13 +223,13 @@ class Player(pg.sprite.Sprite):
             #        self.rect.topleft = (self.x + self.hitbox_offset_x, self.y + self.hitbox_offset_y)
 
             # Bump from left
-            elif self.vel_x > 0 and self.rect.right >= plat.rect.left and self.rect.left < plat.rect.left and self.rect.bottom > plat.rect.top + 10 and self.rect.top < plat.rect.bottom - 10:
+            if self.vel_x > 0 and self.rect.right >= plat.rect.left and self.rect.left < plat.rect.left and self.rect.bottom > plat.rect.top + 10 and self.rect.top < plat.rect.bottom - 10:
                 self.x = plat.rect.left - self.hitbox_offset_x - self.hitbox_width
                 self.vel_x *= -0.5
                 self.state = "bump"
 
             # Bump from right
-            elif self.vel_x < 0 and self.rect.left <= plat.rect.right and self.rect.right > plat.rect.right and self.rect.bottom > plat.rect.top + 10 and self.rect.top < plat.rect.bottom - 10:
+            if self.vel_x < 0 and self.rect.left <= plat.rect.right and self.rect.right > plat.rect.right and self.rect.bottom > plat.rect.top + 10 and self.rect.top < plat.rect.bottom - 10:
                 self.x = plat.rect.right - self.hitbox_offset_x
                 self.vel_x *= -0.5
                 self.state = "bump"

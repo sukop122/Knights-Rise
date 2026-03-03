@@ -12,19 +12,34 @@ levels = [
         },
     {
         "map":"assets/ldtk/lvl_1/simplified/Level_1/_composite.png"
-        }
+        },
+    {    
+        "map":"assets/ldtk/lvl_1/simplified/Level_2/_composite.png"
+        }     
     ]
-current_level = 1
+current_level = 0
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
 
+
+
 pg.init()
+
+
+
 
 screen = pg.display.set_mode((screen_width, screen_height))
 
+game_state = "playing"
+
+WIN_ZONE = pg.Rect(784,32, 64,64)
+
+winscreen = pg.image.load("assets/screens/winscreen.png").convert_alpha()
+
 clock = pg.time.Clock()
+
 running = True
 
 current_map, platform = load_level_data(levels[current_level])
@@ -39,30 +54,44 @@ while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
-
-    screen.blit(current_map,(0, 0))
+            exit()
     
-    keys = pg.key.get_pressed()
+    if game_state == "playing":
+        screen.blit(current_map,(0, 0))
 
-    player.update(keys, platform, current_level)
+        keys = pg.key.get_pressed()
 
-    if player.y + player.height < 0:
-        current_level += 1
-        current_map, platform = load_level_data(levels[current_level])
-        player.y = screen_height - player.height - 10
+        player.update(keys, platform, current_level)
+
+        if player.y + player.height < 0 and current_level < len(levels) -1:
+            current_level += 1
+            current_map, platform = load_level_data(levels[current_level])
+            player.y = screen_height - player.height - 10
+
+        # Fall through to previous level
+        elif player.y > screen_height + 200 and current_level > 0:
+            current_level -= 1
+            current_map, platform = load_level_data(levels[current_level])
+
+            player.y = player.y - screen_height
+        player.draw(screen)
+        player.draw_coords(screen)   
+
+        for plat in platform:
+            plat.draw(screen)
+
+
+        if current_level == 2 and player.rect.colliderect(WIN_ZONE):
+            game_state = "win"
+
+    elif game_state == "game over":
+        pass
     
-    # Fall through to previous level
-    elif player.y > screen_height + 200 and current_level > 0:
-        current_level -= 1
-        current_map, platform = load_level_data(levels[current_level])
+
+    elif game_state == "win":
+        screen.blit(winscreen, (0,0))
         
-        player.y = player.y - screen_height
-    player.draw(screen)
-    player.draw_coords(screen)   
-
-    for plat in platform:
-        plat.draw(screen)
- 
     pg.display.update()
     clock.tick(60)
+pg.quit()
     

@@ -5,6 +5,7 @@ import os
 
 
 
+
 def image_cutter(sheet, frame_x, frame_y, width, height, scale):
     img = pg.Surface((width, height),pg.SRCALPHA)
     img.blit(sheet, (0, 0), ((frame_x * width),(frame_y * height), width, height))
@@ -41,6 +42,9 @@ def load_level_data(level_data):
 
    json_path = map_path.replace(".png", ".json").replace("_composite", "data")
    platforms = load_platforms(json_path)
+   
+   if not os.path.exists(json_path):
+    raise FileNotFoundError(f"Platform data not found: {json_path}")
 
    return map_surface, platforms
     
