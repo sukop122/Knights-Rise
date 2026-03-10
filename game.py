@@ -29,7 +29,6 @@ pg.init()
 
 
 
-
 screen = pg.display.set_mode((screen_width, screen_height))
 
 game_state = "playing"
@@ -42,7 +41,9 @@ clock = pg.time.Clock()
 
 running = True
 
-current_map, platform = load_level_data(levels[current_level])
+#loaded platforms
+all_levels = [load_level_data(level) for level in levels]
+current_map, platform = all_levels[current_level]
 
 sheet = pg.image.load("assets/dataset/brackey/sprites/knight.png").convert_alpha()
 
@@ -63,17 +64,20 @@ while running:
 
         player.update(keys, platform, current_level)
 
+        #overlap between levels
         if player.y + player.height < 0 and current_level < len(levels) -1:
             current_level += 1
-            current_map, platform = load_level_data(levels[current_level])
+            current_map, platform = all_levels[current_level]
             player.y = screen_height - player.height - 10
+            player.rect.topleft = (player.x + player.hitbox_offset_x, player.y + player.hitbox_offset_y)
 
         # Fall through to previous level
-        elif player.y > screen_height + 200 and current_level > 0:
+        elif player.y > screen_height + 200 and current_level > 0 and player.vel_y > 0:
             current_level -= 1
-            current_map, platform = load_level_data(levels[current_level])
-
+            current_map, platform = all_levels[current_level]
             player.y = player.y - screen_height
+            player.rect.topleft = (player.x + player.hitbox_offset_x, player.y + player.hitbox_offset_y)
+           
         player.draw(screen)
         player.draw_coords(screen)   
 

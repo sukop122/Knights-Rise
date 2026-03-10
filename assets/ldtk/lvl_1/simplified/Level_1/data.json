@@ -125,21 +125,10 @@
 				"id": "Platform",
 				"iid": "100c6550-fa90-11f0-ba84-cd07ca6669ab",
 				"layer": "Platform",
-				"x": 688,
-				"y": 784,
+				"x": 656,
+				"y": 768,
 				"width": 48,
 				"height": 32,
-				"color": 12470831,
-				"customFields" : {}
-			},
-			{
-				"id": "Platform",
-				"iid": "115930a0-fa90-11f0-ba84-73d721d4763e",
-				"layer": "Platform",
-				"x": 512,
-				"y": 816,
-				"width": 96,
-				"height": 80,
 				"color": 12470831,
 				"customFields" : {}
 			},
@@ -181,7 +170,7 @@
 				"iid": "1f3bb990-fa90-11f0-ba84-d5ee1c6dd475",
 				"layer": "Platform",
 				"x": 336,
-				"y": 816,
+				"y": 768,
 				"width": 80,
 				"height": 48,
 				"color": 12470831,
@@ -227,17 +216,6 @@
 				"x": 960,
 				"y": 608,
 				"width": 32,
-				"height": 16,
-				"color": 12470831,
-				"customFields" : {}
-			},
-			{
-				"id": "Platform",
-				"iid": "d475e670-fa90-11f0-86df-214cd95ccc2c",
-				"layer": "Platform",
-				"x": 464,
-				"y": 688,
-				"width": 16,
 				"height": 16,
 				"color": 12470831,
 				"customFields" : {}
@@ -315,6 +293,17 @@
 				"x": 256,
 				"y": 336,
 				"width": 16,
+				"height": 16,
+				"color": 12470831,
+				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "6cd2c210-fa90-11f0-886b-5f5e21fa8f16",
+				"layer": "Platform",
+				"x": 528,
+				"y": 784,
+				"width": 32,
 				"height": 16,
 				"color": 12470831,
 				"customFields" : {}

@@ -121,6 +121,8 @@ class Player(pg.sprite.Sprite):
         gravity = 0.6
         self.vel_y += gravity
 
+        
+
     #Aplication of velocities
         self.rect.topleft = (self.x + self.hitbox_offset_x, self.y + self.hitbox_offset_y)
     #Collision with screen borders
