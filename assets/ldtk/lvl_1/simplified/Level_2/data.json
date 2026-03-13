@@ -31,17 +31,6 @@
 		"Platform": [
 			{
 				"id": "Platform",
-				"iid": "2158f240-fa90-11f0-86df-2bcaa72ca2f9",
-				"layer": "Platform",
-				"x": 128,
-				"y": 832,
-				"width": 272,
-				"height": 64,
-				"color": 12470831,
-				"customFields" : {}
-			},
-			{
-				"id": "Platform",
 				"iid": "252c4160-fa90-11f0-86df-51878a5c5780",
 				"layer": "Platform",
 				"x": 544,
@@ -268,6 +257,17 @@
 				"y": 352,
 				"width": 48,
 				"height": 32,
+				"color": 12470831,
+				"customFields" : {}
+			},
+			{
+				"id": "Platform",
+				"iid": "173cfab0-fa90-11f0-8218-e3d61705f584",
+				"layer": "Platform",
+				"x": 32,
+				"y": 880,
+				"width": 288,
+				"height": 16,
 				"color": 12470831,
 				"customFields" : {}
 			}
