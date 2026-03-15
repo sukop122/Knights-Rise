@@ -299,7 +299,7 @@ class Player(pg.sprite.Sprite):
 
 
     def draw_coords (self, screen):
-        font = pg.font.Font("assets/dataset/brackey/fonts/Jersey20-Regular.ttf", 24)
+        font = pg.font.Font("assets/dataset/fonts/Jersey20-Regular.ttf", 24)
 
         text_X = font.render(f"X: {self.x}", False, "#FFFFFF")
         text_Y = font.render(f"Y: {self.y}", False, "#FFFFFF")
