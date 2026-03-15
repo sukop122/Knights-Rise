@@ -262,11 +262,11 @@
 			},
 			{
 				"id": "Platform",
-				"iid": "173cfab0-fa90-11f0-8218-e3d61705f584",
+				"iid": "bb01b100-fa90-11f0-b57a-9d06580091a4",
 				"layer": "Platform",
 				"x": 32,
 				"y": 880,
-				"width": 288,
+				"width": 256,
 				"height": 16,
 				"color": 12470831,
 				"customFields" : {}
