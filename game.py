@@ -33,7 +33,6 @@ screen = pg.display.set_mode((screen_width, screen_height))
 game_state = "playing"
 
 WIN_ZONE = pg.Rect(784,32, 64,64)
-
 winscreen = pg.image.load("assets/screens/winscreen.png").convert_alpha()
 
 clock = pg.time.Clock()

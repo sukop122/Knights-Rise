@@ -25,20 +25,20 @@ class Player(pg.sprite.Sprite):
         self.in_air = False
         self.speed = 3
 
-        self.state = "idle"
-        self.index = 0
-        self.animation_speed = 0.1
-        self.facing_right = True
+        
         self.collision = False
 
         self.hitbox_offset_x = 16
         self.hitbox_offset_y = 14
         self.hitbox_width = self.width + 4
         self.hitbox_height = self.height + 10
+        self.rect = pg.Rect(self.x + self.hitbox_offset_x, self.y + self.hitbox_offset_y, self.hitbox_width, self.hitbox_height)
         
 
-        self.rect = pg.Rect(self.x + self.hitbox_offset_x, self.y + self.hitbox_offset_y, self.hitbox_width, self.hitbox_height)
-
+        self.state = "idle"
+        self.index = 0
+        self.animation_speed = 0.1
+        self.facing_right = True
 
         self.animations = {
             "idle": image_cutter(sheet, 0, 0, 32, 32, 2),
@@ -181,10 +181,8 @@ class Player(pg.sprite.Sprite):
         for plat in platforms:
             next_rect = self.rect.move(0, self.vel_y)
 
-            # horizontal overlap check
             horiz = (self.rect.right > plat.rect.left) and (self.rect.left < plat.rect.right)
 
-            # Landing on top (moving down)
             tolerance = max(20, abs (self.vel_y) + 4)
             if self.vel_y > 0 and horiz:
                 if self.rect.bottom <= plat.rect.top + tolerance and next_rect.bottom >= plat.rect.top:
@@ -198,7 +196,7 @@ class Player(pg.sprite.Sprite):
                     landed = True
                     break
 
-            #Bump from bottom (head hit) - moving up (teacher)
+            #Bump from bottom
             if (
 
                 self.vel_y < 0 and
@@ -225,13 +223,23 @@ class Player(pg.sprite.Sprite):
             #        self.rect.topleft = (self.x + self.hitbox_offset_x, self.y + self.hitbox_offset_y)
 
             # Bump from left
-            if self.vel_x > 0 and self.rect.right >= plat.rect.left and self.rect.left < plat.rect.left and self.rect.bottom > plat.rect.top + 10 and self.rect.top < plat.rect.bottom - 10:
+            if (self.vel_x > 0 and
+                self.rect.right >= plat.rect.left and
+                self.rect.left < plat.rect.left and
+                self.rect.bottom > plat.rect.top + 10 and
+                self.rect.top < plat.rect.bottom - 10
+                ):
                 self.x = plat.rect.left - self.hitbox_offset_x - self.hitbox_width
                 self.vel_x *= -0.5
                 self.state = "bump"
 
             # Bump from right
-            if self.vel_x < 0 and self.rect.left <= plat.rect.right and self.rect.right > plat.rect.right and self.rect.bottom > plat.rect.top + 10 and self.rect.top < plat.rect.bottom - 10:
+            if (self.vel_x < 0 and
+                self.rect.left <= plat.rect.right and
+                self.rect.right > plat.rect.right and
+                self.rect.bottom > plat.rect.top + 10 and
+                self.rect.top < plat.rect.bottom - 10
+                ):
                 self.x = plat.rect.right - self.hitbox_offset_x
                 self.vel_x *= -0.5
                 self.state = "bump"
@@ -260,7 +268,7 @@ class Player(pg.sprite.Sprite):
             filled_width = int(bar_width * charge_ratio)
 
             #position above player
-            bar_x = self.x + self.width // 2 - bar_width // 2
+            bar_x = self.x + self.width // 2 - bar_width // 2 + 14.5
             bar_y = self.y - 15
 
             
@@ -299,19 +307,20 @@ class Player(pg.sprite.Sprite):
 
 
     def draw_coords (self, screen):
-        font = pg.font.Font("assets/dataset/fonts/Jersey20-Regular.ttf", 24)
+        font = pg.font.Font("assets/dataset/fonts/Jersey20-Regular.ttf", 30)
+        if DEBUG:
 
-        text_X = font.render(f"X: {self.x}", False, "#FFFFFF")
-        text_Y = font.render(f"Y: {self.y}", False, "#FFFFFF")
+            text_X = font.render(f"X: {self.x}", False, "#FFFFFF")
+            text_Y = font.render(f"Y: {self.y}", False, "#FFFFFF")
 
-        text_velX = font.render(f"X: {self.vel_x}", False, "#FFFFFF")
-        text_velY = font.render(f"Y: {self.vel_y}", False, "#FFFFFF")
+            text_velX = font.render(f"X: {self.vel_x}", False, "#FFFFFF")
+            text_velY = font.render(f"Y: {self.vel_y}", False, "#FFFFFF")
 
-        screen.blit(text_X, (screen_width-100, 30))
-        screen.blit(text_Y, (screen_width-100, 50))
+            screen.blit(text_X, (screen_width-130, 60))
+            screen.blit(text_Y, (screen_width-130, 80))
 
-        screen.blit(text_velX, (screen_width-100, 80))
-        screen.blit(text_velY, (screen_width-100, 100))
+            screen.blit(text_velX, (screen_width-130, 100))
+            screen.blit(text_velY, (screen_width-130, 120))
 
-        screen.blit(font.render(f"Deaths: {self.dead_counter}", False, "#FFFFFF"), (screen_width-100, 130)) 
+        screen.blit(font.render(f"Deaths: {self.dead_counter}", False, "#9B0909"), (screen_width-130, 30)) 
     
